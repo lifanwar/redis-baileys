@@ -1,0 +1,39 @@
+services:
+  redis:
+    image: redis:latest
+    container_name: wa-redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=PwredisGue12
+    command: ["redis-server", "--requirepass", "PwredisGue12"]
+    volumes:
+      - redis_gurindam:/data
+    mem_limit: 20m
+
+  whatsapp-bot:
+    build: .
+    container_name: whatsapp-gurindam
+    ports:
+      - "3099:3099"  # Menyambungkan port 3040 dari container ke host
+    volumes:
+      - .:/app  # Menggunakan volume agar perubahan file langsung ter-update di container
+    environment:
+      - NODE_ENV=production  # Menentukan environment variabel untuk Node.js
+    restart: always  # Menjamin container akan restart otomatis jika container berhenti
+    mem_limit: 100m
+    command: ["node", "bot.js"]
+    depends_on:
+      - redis
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: whatsapp-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://whatsapp-bot:3099
+    depends_on:
+      - whatsapp-bot
+
+volumes:
+  redis_gurindam:
+    driver: local
