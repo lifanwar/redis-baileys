@@ -9,7 +9,7 @@ minimal instalation in bot.js
 
 # Sample Doc of redis baileys
 
-```
+```js
 const { useRedisAuthState } = require('redis-baileys');
 const { Boom } = require('@hapi/boom');
 const makeWASocket = require('@whiskeysockets/baileys').default;
