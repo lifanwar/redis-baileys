@@ -1,3 +1,5 @@
+<a id="readme-top"></a>
+
 # redis-baileys
 Baileys for redis with docker compose and cloudflared for generate Qrcode
 
