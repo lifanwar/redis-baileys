@@ -7,6 +7,7 @@ This project utilizes the following major frameworks and libraries
 
 * [![Docker Compose][DockerCompose]][DockerCompose-url]
 * [![Whiskeysockets Baileys][WhiskeysocketsBaileys]][WhiskeysocketsBaileys-url]
+* [![Next][Next.js]][Next-url]
 
 ### Installation
 
