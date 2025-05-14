@@ -1,11 +1,59 @@
 # redis-baileys
 Baileys for redis with docker compose and cloudflared for generate Qrcode
 
-# How to install using docker compose
-docker compose up
+### Built With
+
+This project utilizes the following major frameworks and libraries
+
+* [![Docker Compose][DockerCompose]][DockerCompose-url]
+* [![Whiskeysockets Baileys][WhiskeysocketsBaileys]][WhiskeysocketsBaileys-url]
+
+### Installation
+
+_Instalation using docker compose._
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/lifanwar/redis-baileys.git
+   ```
+2. 
+3. Setup your redis password `docker-compose.yml`
+   ```sh
+    environment:
+      - REDIS_PASSWORD=your_redis_password # change your redis password
+    command: ["redis-server", "--requirepass", "your_redis_password"] # change your redis password
+   ```
+4. Edit redis configuration and prefix in bot.js
+   ```js
+    const redisConfig = {
+        password: 'your_redis_password',
+        host: 'your_redis_host', 
+        port: 6379,
+    };
+   ```
+   _if inside docker compose use a services sample below is "redis" as host._
+
+   ```js
+   const { state, saveCreds } = await useRedisAuthState(redisConfig, 'your_session'); // change what you need
+   ```
+
+5. Install Depedency in Docker compose
+   ```sh
+   docker compose up
+   ```
+4. Change git remote url to avoid accidental pushes to base project
+   ```sh
+   git remote set-url origin github_username/repo_name
+   git remote -v # confirm the changes
+   ```
 
 # Setting
-minimal instalation in bot.js
+1. Minimal instalation in bot.js
+2. Delete redis KEYS
+   ```sh
+   redis-cli -a pwgua SCAN 0 MATCH "your_session:*" COUNT 1000
+   ```
+   _it is redis prefix in instalation number 2_
 
 # Sample Doc of redis baileys
 
