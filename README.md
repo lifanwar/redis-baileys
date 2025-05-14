@@ -18,7 +18,10 @@ _Instalation using docker compose._
    ```sh
    git clone https://github.com/lifanwar/redis-baileys.git
    ```
-2. 
+2. Install Depedency
+   ```sh
+   npm install
+   ```
 3. Setup your redis password `docker-compose.yml`
    ```sh
     environment:
