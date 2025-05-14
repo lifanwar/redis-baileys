@@ -58,6 +58,8 @@ _Instalation using docker compose._
    _it is redis prefix in instalation number 2_
 
 # Sample Doc of redis baileys
+_For more examples, please refer to the [Documentation](https://www.npmjs.com/package/redis-baileys)_
+
 
 ```js
 const { useRedisAuthState } = require('redis-baileys');
