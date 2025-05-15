@@ -110,3 +110,16 @@ connectToWhatsApp();
 - [ ] Move broadcast storage to redis using ioredis:
     - [ ] Add prefix format env `REDIS_PREFIX:BROADCAST_CODE`
     - [ ] Add prefix format `BROADCAST_CODE`
+- [ ] Add statistic report:
+    - [ ] Add total succses 
+    - [ ] Add total failure 
+    - [ ] Add average succses 
+    - [ ] Add average failure 
+    - [ ] Add total succses day 
+    - [ ] Add total failure day 
+    - [ ] Add average succses day 
+    - [ ] Add average failure day 
+
+
+
+
