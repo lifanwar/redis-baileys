@@ -101,3 +101,12 @@ async function connectToWhatsApp() {
 
 connectToWhatsApp();
 ```
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [x] Spilt Code can be readed
+- [x] Add Broadcast Message
+- [ ] Move broadcast storage to redis using ioredis:
+    - [ ] Add prefix format env `REDIS_PREFIX:BROADCAST_CODE`
+    - [ ] Add prefix format `BROADCAST_CODE`
