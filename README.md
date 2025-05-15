@@ -37,13 +37,23 @@ _Instalation using docker compose._
    ```sh
    docker compose up
    ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
+5. Running using deatch
+   ```
+   docker compose up -d
    ```
 
 # Setting
+_Setup all of services in docker compose_
+
+### Docker compose
+1. Restart `docker compose restart bot cloudflared`
+2. Stop: 
+    - instalation without deatch: `ctr+c`
+    - instalation using deatch: `docker compose down`
+    _for all services use `docker compose down bot` if just one or same logic as Restart_
+
+
+### Redis
 1. All of setup in file .env
 2. get terminal redis
    ```sh
@@ -54,6 +64,14 @@ _Instalation using docker compose._
    SCAN 0 MATCH "your_prefix:*" COUNT 1000
    ```
    _it is redis prefix in file `.env`_
+
+### Logs
+1. logs what needed
+   ```sh
+   docker compose logs -f --tail 50 bot | grep -i -E "berhasil|gagal|checkpoint|got|got message|connection closed|opened connection"
+   ```
+
+
 
 # Sample Doc of redis baileys
 _For more examples, please refer to the [Documentation](https://www.npmjs.com/package/redis-baileys)_
