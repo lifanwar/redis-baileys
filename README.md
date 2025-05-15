@@ -58,7 +58,7 @@ _Instalation using docker compose._
    ```sh
    docker compose exec redis sh -c "redis-cli -p \$REDIS_PORT -a \$REDIS_PASSWORD"
    ```
-2. Delete redis KEYS
+3. Delete redis KEYS
    ```sh
    SCAN 0 MATCH "your_prefix:*" COUNT 1000
    ```
