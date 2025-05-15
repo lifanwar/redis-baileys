@@ -62,7 +62,7 @@ _Instalation using docker compose._
    ```sh
    SCAN 0 MATCH "your_prefix:*" COUNT 1000
    ```
-   _it is redis prefix in instalation number 2_
+   _it is redis prefix in file `.env`_
 
 # Sample Doc of redis baileys
 _For more examples, please refer to the [Documentation](https://www.npmjs.com/package/redis-baileys)_
