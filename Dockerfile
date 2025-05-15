@@ -13,7 +13,7 @@ RUN npm install
 # Menyalin seluruh file aplikasi ke dalam container
 COPY . .
 
-# Mengekspos port 3040 untuk akses ke server Express
+# Mengekspos port baileys untuk akses ke server Express
 EXPOSE 3099
 
 # Menjalankan aplikasi
