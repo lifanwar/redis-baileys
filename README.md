@@ -53,10 +53,14 @@ _Instalation using docker compose._
    ```
 
 # Setting
-1. Minimal instalation in bot.js
+1. All of setup in file .env
+2. get terminal redis
+   ```sh
+   docker compose exec redis sh -c "redis-cli -p \$REDIS_PORT -a \$REDIS_PASSWORD"
+   ```
 2. Delete redis KEYS
    ```sh
-   redis-cli -a pwgua SCAN 0 MATCH "your_session:*" COUNT 1000
+   SCAN 0 MATCH "your_prefix:*" COUNT 1000
    ```
    _it is redis prefix in instalation number 2_
 
