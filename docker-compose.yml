@@ -5,7 +5,7 @@ services:
     env_file: .env
     ports:
       - "${REDIS_PORT}:${REDIS_PORT}"
-    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}", "--port", "${REDIS_PORT}"]
     volumes:
       - redis_gurindam:/data
     mem_limit: 20m
@@ -29,8 +29,9 @@ services:
   cloudflared:
     image: cloudflare/cloudflared:latest
     container_name: whatsapp-cloudflared-tunnel
+    env_file: .env
     restart: unless-stopped
-    command: tunnel --no-autoupdate --url http://whatsapp-bot:3099
+    command: tunnel --no-autoupdate --url http://bot:3099
     depends_on:
       - bot
 
