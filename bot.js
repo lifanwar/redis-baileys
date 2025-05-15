@@ -7,6 +7,9 @@ const {
     makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
 
+// inisiasi file .env
+require('dotenv').config(); 
+
 // file
 const fs = require("fs");
 const fsImage = require("fs/promises");
@@ -19,7 +22,7 @@ const logger = pino({ level: 'silent' });
 
 // koneksi ke express
 const app = express();
-const PORT = 3099;
+const PORT = process.env.BAILEYS_PORT;
 
 const server = app.listen(PORT, () => {
     console.log(`server is running on http://localhost:${PORT}`);
@@ -28,12 +31,12 @@ const server = app.listen(PORT, () => {
 
 async function connectToWhatsApp() {
     const redisConfig = {
-        password: 'PwredisGue12',
-        host: 'redis',
-        port: 6379,
+        password: process.env.REDIS_PASSWORD,
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT),
     };
 
-    const { state, saveCreds } = await useRedisAuthState(redisConfig, 'gurindamlian');
+    const { state, saveCreds } = await useRedisAuthState(redisConfig, process.env.REDIS_PREFIX);
     const { version, isLatest } = await fetchLatestBaileysVersion();
     console.log(`Menggunakan wa Web versi ${version.join(".")}, terbaru: ${isLatest}`);
 
