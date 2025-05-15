@@ -10,11 +10,12 @@ services:
       - redis_gurindam:/data
     mem_limit: 20m
 
-  whatsapp-bot:
+  bot:
     build: .
     container_name: whatsapp-lian
+    env_file: .env
     ports:
-      - "3099:3099"  # Menyambungkan port 3040 dari container ke host
+      - "${BAILEYS_PORT}:${BAILEYS_PORT}"  # Menyambungkan port 3040 dari container ke host
     volumes:
       - .:/app  # Menggunakan volume agar perubahan file langsung ter-update di container
     environment:
@@ -31,7 +32,7 @@ services:
     restart: unless-stopped
     command: tunnel --no-autoupdate --url http://whatsapp-bot:3099
     depends_on:
-      - whatsapp-bot
+      - bot
 
 volumes:
   redis_gurindam:
