@@ -70,8 +70,16 @@ _Setup all of services in docker compose_
    ```sh
    docker compose logs -f --tail 50 bot | grep -i -E "berhasil|gagal|checkpoint|got|got message|connection closed|opened connection"
    ```
-
-
+### install another bot, without always install npm
+1. using symlink
+2. clone this repo in Primary directory 
+   ```sh
+   git clone https://github.com/lifanwar/redis-baileys.git ./folder_bot_uNeed 
+   ```
+3. 
+   ```
+   ln -s ../node_modules node_modules
+   ```
 
 # Sample Doc of redis baileys
 _For more examples, please refer to the [Documentation](https://www.npmjs.com/package/redis-baileys)_
