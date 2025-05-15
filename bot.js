@@ -7,12 +7,30 @@ const {
     makeCacheableSignalKeyStore
 } = require("@whiskeysockets/baileys");
 
+// import utilitas broadcast
+const {
+    loadCheckpoint,
+    saveCheckpoint,
+    loadBroadcastStatus,
+    saveBroadcastStatus,
+    saveSender,
+    loadSender,
+    TIMEOUT,
+    sendMessageWithTimeout,
+    loadFailedAttempts,
+    saveFailedAttempts,
+} = require('./Broadcast/Utils/handling-file.js');
+const { checkAndContinueBroadcast } = require('./Broadcast/Utils/handling-continue.js');
+const { sendBC } = require('./Broadcast/Utils/sendBC.js');
+
 // inisiasi file .env
 require('dotenv').config(); 
 
 // file
 const fs = require("fs");
 const fsImage = require("fs/promises");
+const groupsData = require("./groups.json");
+
 const express = require("express");
 const path = require('path');
 
@@ -29,6 +47,8 @@ const server = app.listen(PORT, () => {
 });
 
 
+let sock;
+
 async function connectToWhatsApp() {
     const redisConfig = {
         password: process.env.REDIS_PASSWORD,
@@ -40,7 +60,7 @@ async function connectToWhatsApp() {
     const { version, isLatest } = await fetchLatestBaileysVersion();
     console.log(`Menggunakan wa Web versi ${version.join(".")}, terbaru: ${isLatest}`);
 
-    const sock = makeWASocket({
+    sock = makeWASocket({
         logger: logger,
         auth: {
 			creds: state.creds,
@@ -77,7 +97,7 @@ async function connectToWhatsApp() {
             console.log("opened connection");
 
             // Cek status broadcast dan lanjutkan jika perlu
-            // checkAndContinueBroadcast();
+            checkAndContinueBroadcast(sock);
         }
     });
     sock.ev.on('creds.update', saveCreds);
@@ -89,9 +109,7 @@ async function connectToWhatsApp() {
         const isPrivateMessage = msg.key.remoteJid.endsWith("@s.whatsapp.net");
         if (isPrivateMessage) {
             const sender = msg.key.remoteJid;
-            const messageContent = msg.message.conversation || "";
-            const bacapesan = msg.message.extendedTextMessage?.text || "";
-            const BacaPesan = bacapesan || messageContent;
+            const BacaPesan = msg.message.extendedTextMessage?.text || msg.message.conversation || "";
 
             console.log(`got message: ${BacaPesan} from ${sender}`);
 
@@ -106,9 +124,62 @@ async function connectToWhatsApp() {
                     }
                 );
             }
+
+            if (BacaPesan.toLowerCase() === "start") {
+                saveSender(sender); // Simpan pengirim perintah start
+                saveBroadcastStatus(true); // Tandai bahwa broadcast sedang berlangsung
+                console.log("Memulai mengirim otomatis setiap 30 menit");
+                await sock.sendMessage(
+                    sender,
+                    {
+                        text: "Memulai mengirim otomatis",
+                    },
+                );
+                await sendBC(sender, sock);
+            }
+
+            // membuat data id group
+      if (BacaPesan.toLowerCase() === "ambilgc") {
+        // Ambil semua grup yang terhubung dengan akun bot ini
+        const groupMetadata = await sock.groupFetchAllParticipating();
+        const groups = Object.values(groupMetadata).map((group) => ({
+          id: group.id,
+          subject: group.subject,
+        }));
+
+        const ProsesSaveData = await sock.sendMessage(
+          sender,
+          {
+            text: "Proses save data",
+          },
+          {
+            quoted: msg,
+          }
+        );
+
+        // simpan data group ke dalam file
+        fs.writeFileSync("./groups.json", JSON.stringify(groups, null, 2));
+        let totalGroups = groupsData.length;
+
+        await sock.sendMessage(sender, {
+          text: `Sudah menyimpan data, sedang mengirim file...`,
+          edit: ProsesSaveData.key,
+        });
+
+  
+
+        // Kirim file groups.json ke pengirim perintah
+        await sock.sendMessage(sender, {
+          document: { url: "./groups.json" },
+          mimetype: "application/json",
+          fileName: "groups.json",
+        });
+      }
         }
     });
 
 }
+
+
 
 connectToWhatsApp();
