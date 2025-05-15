@@ -22,31 +22,22 @@ _Instalation using docker compose._
    ```sh
    npm install
    ```
-3. Setup your redis password `docker-compose.yml`
+3. Edit all redis configuration and baileys in `env`
    ```sh
-    environment:
-      - REDIS_PASSWORD=your_redis_password # change your redis password
-    command: ["redis-server", "--requirepass", "your_redis_password"] # change your redis password
+   # Redis Setup
+   REDIS_HOST=redis
+   REDIS_PORT=6379
+   REDIS_PREFIX=gurindamlian
+   REDIS_PASSWORD=PwredisGue12
+   
+   # Baileys Setup
+   BAILEYS_PORT=3099
    ```
-4. Edit redis configuration and prefix in bot.js
-   ```js
-    const redisConfig = {
-        password: 'your_redis_password',
-        host: 'your_redis_host', 
-        port: 6379,
-    };
-   ```
-   _if inside docker compose use a services sample below is "redis" as host._
-
-   ```js
-   const { state, saveCreds } = await useRedisAuthState(redisConfig, 'your_session'); // change what you need
-   ```
-
-5. Install Depedency in Docker compose
+4. Install Depedency in Docker compose
    ```sh
    docker compose up
    ```
-4. Change git remote url to avoid accidental pushes to base project
+5. Change git remote url to avoid accidental pushes to base project
    ```sh
    git remote set-url origin github_username/repo_name
    git remote -v # confirm the changes
