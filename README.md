@@ -76,10 +76,11 @@ _Setup all of services in docker compose_
    ```sh
    git clone https://github.com/lifanwar/redis-baileys.git ./folder_bot_uNeed 
    ```
-3. 
+3. Make symlink
    ```
    ln -s ../node_modules node_modules
    ```
+4. 
 
 # Sample Doc of redis baileys
 _For more examples, please refer to the [Documentation](https://www.npmjs.com/package/redis-baileys)_
