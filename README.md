@@ -61,7 +61,7 @@ _Setup all of services in docker compose_
    ```
 3. Delete redis KEYS
    ```sh
-   SCAN 0 MATCH "your_prefix:*" COUNT 1000
+   eval "local keys = redis.call('keys', ARGV[1]) for i=1,#keys,5000 do redis.call('del', unpack(keys, i, math.min(i+4999, #keys))) end return #keys" 0 "your_prefix:*"
    ```
    _it is redis prefix in file `.env`_
 
